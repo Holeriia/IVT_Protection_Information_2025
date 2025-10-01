@@ -1,7 +1,8 @@
-package main.java.com.mydes;
+package main.java.cipher;
 
-import main.java.com.mydes.core.DesCipherCore;
-import main.java.com.mydes.core.DesKeyScheduler;
+import main.java.cipher.util.BitUtils;
+import main.java.cipher.des.DesCipherCore;
+import main.java.cipher.des.DesKeyScheduler;
 
 /**
  * Главный класс для тестирования и демонстрации работы алгоритма DES Core.
@@ -35,8 +36,13 @@ public class Main {
     public static void main(String[] args) {
         // --- Тестовый вектор DES (известный) ---
         String PLAIN_HEX = "0123456789ABCDEF";
-        String KEY_HEX = "133457799BBCDFEF";
+        String KEY_HEX = "133457799BBCDFF1";
         String EXPECTED_CIPHER_HEX = "85E813540F0AB405";
+
+//        // --- Тестовый вектор DES (известный) ---
+//        String PLAIN_HEX = "0000000000000000";
+//        String KEY_HEX = "0000000000000000";
+//        String EXPECTED_CIPHER_HEX = "8CA64DE9C1B123A7";
 
         System.out.println("--- Проверка ядра DES (блочное шифрование) ---");
         System.out.println("Исходный текст (Hex): " + PLAIN_HEX);
@@ -48,6 +54,10 @@ public class Main {
             // 1. Подготовка данных
             byte[] plaintext = hexStringToByteArray(PLAIN_HEX);
             byte[] masterKey = hexStringToByteArray(KEY_HEX);
+
+
+            int[] keyBits = BitUtils.byteArrayToBitArray(masterKey);
+            System.out.println("DEBUG: Длина keyBits: " + keyBits.length);
 
             // 2. Генерация раундовых ключей
             int[][] roundKeys = DesKeyScheduler.generateKeys(masterKey);

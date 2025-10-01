@@ -1,4 +1,4 @@
-package main.java.com.mydes.core;
+package main.java.cipher.util;
 
 /**
         * Вспомогательный класс для низкоуровневых операций с битами.
@@ -17,12 +17,15 @@ public class BitUtils {
     public static int[] byteArrayToBitArray(byte[] bytes) {
         int[] bits = new int[bytes.length * 8];
         for (int i = 0; i < bytes.length; i++) {
+            // Явно приводим байт к int с сохранением всех 8 бит.
+            // Операция & 0xFF гарантирует, что мы работаем с 32-битным int,
+            // у которого старшие 24 бита равны 0.
+            int val = bytes[i] & 0xFF;
+
             for (int j = 0; j < 8; j++) {
-                // Извлекаем j-й бит из i-го байта.
-                // & 1 для получения 0 или 1.
-                // DES использует Big Endian (бит 7 - самый старший, бит 0 - самый младший).
-                // Бит 7 находится в позиции 7, бит 0 в позиции 0.
-                bits[i * 8 + j] = (bytes[i] >>> (7 - j)) & 1;
+                // j=0 -> бит 7 (старший), j=7 -> бит 0 (младший)
+                // Используем val вместо bytes[i]
+                bits[i * 8 + j] = (val >>> (7 - j)) & 1;
             }
         }
         return bits;
@@ -60,16 +63,18 @@ public class BitUtils {
     public static int[] performPermutation(int[] input, int[] permutationTable) {
         int[] output = new int[permutationTable.length];
         for (int i = 0; i < permutationTable.length; i++) {
-            // Индекс i-го бита в output берется из элемента permutationTable[i]
-            // во входном массиве input.
-            int sourceIndex = permutationTable[i];
+            // Мы предполагаем, что таблица 1-базовая
+            int oneBasedIndex = permutationTable[i];
+            int zeroBasedIndex = oneBasedIndex - 1; // <--- Корректный 0-базовый индекс
 
-            // Защита от выхода за пределы, хотя не должно случиться, если таблицы верны.
-            if (sourceIndex >= input.length || sourceIndex < 0) {
-                throw new IllegalArgumentException("Некорректный индекс в таблице перестановки: " + sourceIndex);
+            // input.length = 64, zeroBasedIndex должен быть < 64
+            if (zeroBasedIndex >= input.length || zeroBasedIndex < 0) {
+                // Мы поймаем любую ошибку, если в таблице есть 0 или >64
+                throw new IllegalArgumentException("Некорректный индекс: " + oneBasedIndex +
+                        " (Преобразован в " + zeroBasedIndex + "). Максимально допустимый: " + (input.length - 1));
             }
 
-            output[i] = input[sourceIndex];
+            output[i] = input[zeroBasedIndex];
         }
         return output;
     }

@@ -1,4 +1,6 @@
-package main.java.com.mydes.core;
+package main.java.cipher.des;
+
+import main.java.cipher.util.BitUtils;
 
 import java.util.Arrays;
 
@@ -20,6 +22,7 @@ public class DesKeyScheduler {
 
         // 1. Преобразование в массив битов
         int[] keyBits = BitUtils.byteArrayToBitArray(masterKey64);
+        System.out.println("DEBUG: Длина keyBits в KeyScheduler: " + keyBits.length);
 
         // 2. Применение PC-1 (Перестановка/Сжатие 64 -> 56 бит)
         int[] key56 = BitUtils.performPermutation(keyBits, DesTables.PC_1);

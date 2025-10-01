@@ -1,6 +1,7 @@
-package main.java.com.mydes.core;
+package main.java.cipher.des;
 
-import main.java.com.mydes.Main;
+import main.java.cipher.Main;
+import main.java.cipher.util.BitUtils;
 
 import java.util.Arrays;
 

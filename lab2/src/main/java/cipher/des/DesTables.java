@@ -1,4 +1,4 @@
-package main.java.com.mydes.core;
+package main.java.cipher.des;
 
 /**
  * Статический класс для хранения всех таблиц и констант алгоритма DES.
@@ -13,16 +13,16 @@ public final class DesTables {
     /**
      * Вспомогательный метод для преобразования 1-базовых индексов в 0-базовые.
      */
-    private static int[] toZeroBased(int[] oneBasedArray) {
-        int[] zeroBasedArray = new int[oneBasedArray.length];
-        for (int i = 0; i < oneBasedArray.length; i++) {
-            zeroBasedArray[i] = oneBasedArray[i] - 1;
-        }
-        return zeroBasedArray;
-    }
+//    private static int[] toZeroBased(int[] oneBasedArray) {
+//        int[] zeroBasedArray = new int[oneBasedArray.length];
+//        for (int i = 0; i < oneBasedArray.length; i++) {
+//            zeroBasedArray[i] = oneBasedArray[i] - 1;
+//        }
+//        return zeroBasedArray;
+//    }
 
     // --- 1. Начальная перестановка (IP) ---
-    private static final int[] IP_ONE_BASED = {
+    public static final int[] IP = {
             58, 50, 42, 34, 26, 18, 10, 2,
             60, 52, 44, 36, 28, 20, 12, 4,
             62, 54, 46, 38, 30, 22, 14, 6,
@@ -32,10 +32,9 @@ public final class DesTables {
             61, 53, 45, 37, 29, 21, 13, 5,
             63, 55, 47, 39, 31, 23, 15, 7
     };
-    public static final int[] IP = toZeroBased(IP_ONE_BASED);
 
     // --- 2. Конечная перестановка (IP^-1) ---
-    private static final int[] IP_INV_ONE_BASED = {
+    public static final int[] IP_INV = {
             40, 8, 48, 16, 56, 24, 64, 32,
             39, 7, 47, 15, 55, 23, 63, 31,
             38, 6, 46, 14, 54, 22, 62, 30,
@@ -45,11 +44,10 @@ public final class DesTables {
             34, 2, 42, 10, 50, 18, 58, 26,
             33, 1, 41, 9, 49, 17, 57, 25
     };
-    public static final int[] IP_INV = toZeroBased(IP_INV_ONE_BASED);
 
     // --- 3. Таблица расширения (E-Box) ---
     // Примечание: Индексы здесь относятся к 32 битам R_i-1, которые сами уже 0-базовые.
-    private static final int[] E_ONE_BASED = {
+    public static final int[] E = {
             32, 1, 2, 3, 4, 5,
             4, 5, 6, 7, 8, 9,
             8, 9, 10, 11, 12, 13,
@@ -59,20 +57,17 @@ public final class DesTables {
             24, 25, 26, 27, 28, 29,
             28, 29, 30, 31, 32, 1
     };
-    public static final int[] E = toZeroBased(E_ONE_BASED);
-
 
     // --- 4. Перестановка P ---
-    private static final int[] P_ONE_BASED = {
+    public static final int[] P = {
             16, 7, 20, 21, 29, 12, 28, 17,
             1, 15, 23, 26, 5, 18, 31, 10,
             2, 8, 24, 14, 32, 27, 3, 9,
             19, 13, 30, 6, 22, 11, 4, 25
     };
-    public static final int[] P = toZeroBased(P_ONE_BASED);
 
     // --- 5. PC-1 (Перестановка/Сжатие ключа) ---
-    private static final int[] PC_1_ONE_BASED = {
+    public static final int[] PC_1= {
             57, 49, 41, 33, 25, 17, 9,
             1, 58, 50, 42, 34, 26, 18,
             10, 2, 59, 51, 43, 35, 27,
@@ -82,10 +77,9 @@ public final class DesTables {
             14, 6, 61, 53, 45, 37, 29,
             21, 13, 5, 28, 20, 12, 4
     };
-    public static final int[] PC_1 = toZeroBased(PC_1_ONE_BASED);
 
     // --- 6. PC-2 (Перестановка/Сжатие ключа до 48 бит) ---
-    private static final int[] PC_2_ONE_BASED = {
+    public static final int[] PC_2 = {
             14, 17, 11, 24, 1, 5,
             3, 28, 15, 6, 21, 10,
             23, 19, 12, 4, 26, 8,
@@ -95,14 +89,11 @@ public final class DesTables {
             44, 49, 39, 56, 34, 53,
             46, 42, 50, 36, 29, 32
     };
-    public static final int[] PC_2 = toZeroBased(PC_2_ONE_BASED);
 
     // --- 7. Сдвиги для каждого раунда ---
-    // (Уже 0-базовые, т.к. это количество сдвигов, а не индексы)
     public static final int[] SHIFTS = {1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1};
 
     // --- 8. S-блоки (8 таблиц по 4x16) ---
-    // (Уже 0-базовые, т.к. это выходные значения, а не индексы)
     public static final int[][][] S_BOX = {
             // S1
             {
