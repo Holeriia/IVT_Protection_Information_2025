@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * Класс, отвечающий за генерацию 16 раундовых ключей DES (Key Schedule).
  */
-public class DesKeyScheduler {
+public class KeyScheduler {
 
     /**
      * Генерирует 16 48-битных раундовых ключей из 64-битного мастер-ключа.
@@ -22,7 +22,6 @@ public class DesKeyScheduler {
 
         // 1. Преобразование в массив битов
         int[] keyBits = BitUtils.byteArrayToBitArray(masterKey64);
-        System.out.println("DEBUG: Длина keyBits в KeyScheduler: " + keyBits.length);
 
         // 2. Применение PC-1 (Перестановка/Сжатие 64 -> 56 бит)
         int[] key56 = BitUtils.performPermutation(keyBits, DesTables.PC_1);
