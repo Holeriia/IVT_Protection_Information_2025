@@ -1,39 +1,44 @@
 package main.java.cipher.test;
 
-import main.java.cipher.des.DES;
-import main.java.cipher.des.KeyScheduler;
+import main.java.cipher.des.BlockCipher;
+import main.java.cipher.des.DesCipher;
 import main.java.cipher.util.HexUtils;
 
 /**
- * Класс для проверки корректности работы DES ядра на известных векторах
+ * Класс для проверки корректности работы DES ядра на известных векторах.
+ * Используется новый интерфейс BlockCipher и класс DesCipher.
  */
 public class DesTest {
 
-    //Запускает один тест DES
+    /**
+     * Запускает один тест DES на известном векторе.
+     */
     private static void runKnownAnswerTest(String hexPlaintext, String hexKey, String expectedCipherHex) {
         byte[] plaintext = HexUtils.hexStringToByteArray(hexPlaintext);
         byte[] key = HexUtils.hexStringToByteArray(hexKey);
         byte[] expected = HexUtils.hexStringToByteArray(expectedCipherHex);
 
-        int[][] roundKeys = KeyScheduler.generateKeys(key);
-        byte[] cipher = DES.encryptBlock(plaintext, roundKeys);
+        BlockCipher des = new DesCipher(key);
+        byte[] cipher = des.encryptBlock(plaintext);
+        byte[] decrypted = des.decryptBlock(cipher);
 
         String actualHex = HexUtils.byteArrayToHexString(cipher);
         String expectedHex = HexUtils.byteArrayToHexString(expected);
+        String decryptedHex = HexUtils.byteArrayToHexString(decrypted);
 
-        System.out.println("--- DES Test ---");
-        System.out.println("Plaintext: " + hexPlaintext);
-        System.out.println("Key:       " + hexKey);
-        System.out.println("Expected:  " + expectedHex);
-        System.out.println("Actual:    " + actualHex);
+        System.out.println("------------ Тест DES ------------");
+        System.out.println("Открытый текст:   " + hexPlaintext);
+        System.out.println("Ключ:             " + hexKey);
+        System.out.println("Ожидаемый шифр:   " + expectedHex);
+        System.out.println("Фактический шифр: " + actualHex);
+        System.out.println("Расшифровка:      " + decryptedHex);
 
-        if (actualHex.equals(expectedHex)) {
-            System.out.println("✅ SUCCESS\n");
+        if (actualHex.equals(expectedHex) && decryptedHex.equals(hexPlaintext)) {
+            System.out.println("✅УСПЕХ\n");
         } else {
-            System.out.println("❌ FAILURE\n");
+            System.out.println("❌ОШИБКА\n");
         }
     }
-
 
     public static void main(String[] args) {
         runKnownAnswerTest(
