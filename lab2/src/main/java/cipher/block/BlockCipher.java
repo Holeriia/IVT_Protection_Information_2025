@@ -1,4 +1,4 @@
-package main.java.cipher.des;
+package main.java.cipher.block;
 
 public interface BlockCipher {
     int getBlockSize();

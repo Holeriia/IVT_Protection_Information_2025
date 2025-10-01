@@ -1,5 +1,7 @@
 package main.java.cipher.des;
 
+import main.java.cipher.block.BlockCipher;
+
 public class DesCipher implements BlockCipher {
     private final int[][] roundKeys;
     private static final int BLOCK_SIZE = 8; // 64 бита

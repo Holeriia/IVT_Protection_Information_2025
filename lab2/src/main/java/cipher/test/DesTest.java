@@ -1,6 +1,6 @@
 package main.java.cipher.test;
 
-import main.java.cipher.des.BlockCipher;
+import main.java.cipher.block.BlockCipher;
 import main.java.cipher.des.DesCipher;
 import main.java.cipher.util.HexUtils;
 
