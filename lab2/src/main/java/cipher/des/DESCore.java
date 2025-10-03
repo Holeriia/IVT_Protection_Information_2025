@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 /**
  * Реализация алгоритма DES для одного блока (64-бит).
- * Используется как ядро для всех режимов работы (ECB, CFB, OFB, CBC).
  */
 public class DESCore {
     /**

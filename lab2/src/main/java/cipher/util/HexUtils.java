@@ -1,12 +1,22 @@
 package main.java.cipher.util;
 
+/**
+ * Вспомогательный класс для работы с шестнадцатеричными строками.
+ * Используется для преобразования байтов в hex и обратно.
+ */
 public class HexUtils {
 
-    //Преобразует шестнадцатеричную строку в массив байтов
+    /**
+     * Преобразует шестнадцатеричную строку в массив байтов.
+     *
+     * @param hex строка в hex-формате (должна иметь чётную длину)
+     * @return массив байтов
+     * @throws IllegalArgumentException если длина строки нечётная
+     */
     public static byte[] hexStringToByteArray(String hex) {
         int len = hex.length();
         if (len % 2 != 0) {
-            throw new IllegalArgumentException("Hex string must have even length");
+            throw new IllegalArgumentException("Шестнадцатеричная строка должна иметь чётную длину");
         }
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
@@ -16,7 +26,12 @@ public class HexUtils {
         return data;
     }
 
-    //Преобразует массив байтов в шестнадцатеричную строку
+    /**
+     * Преобразует массив байтов в шестнадцатеричную строку.
+     *
+     * @param bytes массив байтов
+     * @return строка в hex-формате (заглавные буквы)
+     */
     public static String byteArrayToHexString(byte[] bytes) {
         StringBuilder sb = new StringBuilder(bytes.length * 2);
         for (byte b : bytes) {

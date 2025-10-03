@@ -6,13 +6,10 @@ import main.java.cipher.util.HexUtils;
 
 /**
  * Класс для проверки корректности работы DES ядра на известных векторах.
- * Используется новый интерфейс BlockCipher и класс DesCipher.
  */
 public class DesTest {
 
-    /**
-     * Запускает один тест DES на известном векторе.
-     */
+    //Запускает один тест DES на известном векторе.
     private static void runKnownAnswerTest(String hexPlaintext, String hexKey, String expectedCipherHex) {
         byte[] plaintext = HexUtils.hexStringToByteArray(hexPlaintext);
         byte[] key = HexUtils.hexStringToByteArray(hexKey);

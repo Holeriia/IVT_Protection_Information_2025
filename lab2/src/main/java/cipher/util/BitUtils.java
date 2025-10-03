@@ -5,9 +5,6 @@ package main.java.cipher.util;
  */
 public class BitUtils {
 
-    // Запрещаем создание экземпляров
-    private BitUtils() {}
-
     /**
      * Преобразует массив байтов (8 бит) в массив целых чисел (каждое целое = 1 бит).
      *
@@ -93,7 +90,7 @@ public class BitUtils {
         // Нормализация сдвигов
         shifts = shifts % length;
         if (shifts < 0) {
-            shifts += length; // Обработка отрицательных сдвигов, хотя здесь не нужно.
+            shifts += length; // Обработка отрицательных сдвигов
         }
 
         for (int i = 0; i < length; i++) {

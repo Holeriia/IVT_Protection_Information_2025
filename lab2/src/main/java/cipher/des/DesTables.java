@@ -2,24 +2,8 @@ package main.java.cipher.des;
 
 /**
  * Статический класс для хранения всех таблиц и констант алгоритма DES.
- * Все индексы в таблицах перестановок приведены к 0-базовой индексации.
  */
 public final class DesTables {
-
-    private DesTables() {
-        // Запрещаем создание экземпляров
-    }
-
-    /**
-     * Вспомогательный метод для преобразования 1-базовых индексов в 0-базовые.
-     */
-//    private static int[] toZeroBased(int[] oneBasedArray) {
-//        int[] zeroBasedArray = new int[oneBasedArray.length];
-//        for (int i = 0; i < oneBasedArray.length; i++) {
-//            zeroBasedArray[i] = oneBasedArray[i] - 1;
-//        }
-//        return zeroBasedArray;
-//    }
 
     // --- 1. Начальная перестановка (IP) ---
     public static final int[] IP = {
@@ -46,7 +30,6 @@ public final class DesTables {
     };
 
     // --- 3. Таблица расширения (E-Box) ---
-    // Примечание: Индексы здесь относятся к 32 битам R_i-1, которые сами уже 0-базовые.
     public static final int[] E = {
             32, 1, 2, 3, 4, 5,
             4, 5, 6, 7, 8, 9,
