@@ -11,7 +11,6 @@ import main.java.cipher.util.HexUtils;
 public class KuznechikTest {
 
     public static void main(String[] args) {
-        System.out.println("======= Тест алгоритма КУЗНЕЧИК =======");
 
         // Эталонные данные из ГОСТ Р 34.12–2015
         String hexKey =
@@ -40,6 +39,7 @@ public class KuznechikTest {
         String decryptedHex = HexUtils.byteArrayToHexString(decrypted);
 
         // Красивый вывод
+        System.out.println("======= Тест алгоритма КУЗНЕЧИК =======");
         System.out.println("Открытый текст:   " + hexPlaintext);
         System.out.println("Ключ:             " + hexKey);
         System.out.println("Ожидаемый шифр:   " + expectedHexCipher);
