@@ -1,19 +1,21 @@
 package main.java.cipher.api;
 
-import main.java.cipher.kuznechik.KuznechikCipher;
+import main.java.cipher.kuznechik.KuznechikCore;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * Адаптер для работы с KuznechikCipher через интерфейс BlockCipher.
  */
-public class Kuznechik implements BlockCipher {
+public class KuznechikCipher implements BlockCipher {
 
-    private final KuznechikCipher cipher;
+    private final KuznechikCore cipher;
 
     /**
      * Конструктор принимает 32-байтовый ключ (256 бит).
      * Первые 16 байт — key1, вторые 16 — key2.
      */
-    public Kuznechik(byte[] fullKey) {
+    public KuznechikCipher(byte[] fullKey) {
         if (fullKey.length != 32) {
             throw new IllegalArgumentException("Ключ Кузнечика должен быть длиной 32 байта (256 бит)");
         }
@@ -21,7 +23,7 @@ public class Kuznechik implements BlockCipher {
         byte[] key2 = new byte[16];
         System.arraycopy(fullKey, 0, key1, 0, 16);
         System.arraycopy(fullKey, 16, key2, 0, 16);
-        this.cipher = new KuznechikCipher(key1, key2);
+        this.cipher = new KuznechikCore(key1, key2);
     }
 
     @Override

@@ -3,12 +3,12 @@ package main.java.cipher.kuznechik;
 import main.java.cipher.util.HexUtils;
 import main.java.cipher.util.XorUtils;
 
-public class KuznechikCipher {
+public class KuznechikCore {
 
     private static final int BLOCK_SIZE = 16;
     private byte[][] iter_key = new byte[10][BLOCK_SIZE];
 
-    public KuznechikCipher(byte[] key1, byte[] key2) {
+    public KuznechikCore(byte[] key1, byte[] key2) {
         expandKey(key1, key2);
     }
 
@@ -77,7 +77,7 @@ public class KuznechikCipher {
         byte[] key1 = HexUtils.hexStringToByteArray("8899AABBCCDDEEFF0011223344556677");
         byte[] key2 = HexUtils.hexStringToByteArray("FEDCBA98765432100123456789ABCDEF");
 
-        KuznechikCipher cipher = new KuznechikCipher(key1, key2);
+        KuznechikCore cipher = new KuznechikCore(key1, key2);
 
         byte[] block = HexUtils.hexStringToByteArray("1122334455667700FFEEDDCCBBAA9988");
         byte[] encrypted = cipher.encryptBlock(block);

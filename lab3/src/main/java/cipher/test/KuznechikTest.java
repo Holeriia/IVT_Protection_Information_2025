@@ -1,7 +1,7 @@
 package main.java.cipher.test;
 
 import main.java.cipher.api.BlockCipher;
-import main.java.cipher.api.Kuznechik;
+import main.java.cipher.api.KuznechikCipher;
 import main.java.cipher.util.HexUtils;
 
 /**
@@ -22,7 +22,7 @@ public class KuznechikTest {
         byte[] plaintext = HexUtils.hexStringToByteArray(hexPlaintext);
 
         // Создание экземпляра через интерфейс
-        BlockCipher kuznechik = new Kuznechik(key);
+        BlockCipher kuznechik = new KuznechikCipher(key);
 
         // Проверка размера блока
         if (kuznechik.blockSize() != 16) {
