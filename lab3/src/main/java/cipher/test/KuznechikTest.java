@@ -25,13 +25,13 @@ public class KuznechikTest {
         BlockCipher kuznechik = new KuznechikCipher(key);
 
         // Проверка размера блока
-        if (kuznechik.blockSize() != 16) {
+        if (kuznechik.getBlockSize() != 16) {
             System.out.println("⚠️ Предупреждение: размер блока не равен 16 байтам!");
         }
 
         // Шифрование и расшифрование
-        byte[] encrypted = kuznechik.encrypt(plaintext);
-        byte[] decrypted = kuznechik.decrypt(encrypted);
+        byte[] encrypted = kuznechik.encryptBlock(plaintext);
+        byte[] decrypted = kuznechik.decryptBlock(encrypted);
 
         // Преобразование в HEX
         String actualHexCipher = HexUtils.byteArrayToHexString(encrypted);

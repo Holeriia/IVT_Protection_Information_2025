@@ -27,12 +27,12 @@ public class KuznechikCipher implements BlockCipher {
     }
 
     @Override
-    public int blockSize() {
+    public int getBlockSize() {
         return 16; // размер блока Кузнечика — 128 бит
     }
 
     @Override
-    public byte[] encrypt(byte[] block) {
+    public byte[] encryptBlock(byte[] block) {
         if (block.length != 16) {
             throw new IllegalArgumentException("Размер блока должен быть 16 байт");
         }
@@ -40,7 +40,7 @@ public class KuznechikCipher implements BlockCipher {
     }
 
     @Override
-    public byte[] decrypt(byte[] block) {
+    public byte[] decryptBlock(byte[] block) {
         if (block.length != 16) {
             throw new IllegalArgumentException("Размер блока должен быть 16 байт");
         }
