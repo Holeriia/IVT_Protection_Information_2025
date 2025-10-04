@@ -1,17 +1,18 @@
 package main.java.cipher;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import main.java.cipher.kuznechik.RoundKeys;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        RoundKeys rk = new RoundKeys(10, 16);
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        byte[] key = new byte[16];
+        for (int i = 0; i < 16; i++) key[i] = (byte) i;
+
+        rk.setKey(0, key);
+
+        byte[] k = rk.getKey(0);
+        System.out.print("Ключ раунда 0: ");
+        for (byte b : k) System.out.printf("%02X ", b);
     }
 }
