@@ -6,7 +6,6 @@ import main.java.cipher.util.HexUtils;
 
 /**
  * Тестовый класс для проверки реализации алгоритма "Кузнечик" (ГОСТ Р 34.12-2015)
- * через интерфейс BlockCipher.
  */
 public class KuznechikTest {
 

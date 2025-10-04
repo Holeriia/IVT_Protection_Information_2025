@@ -4,9 +4,12 @@ import main.java.cipher.util.HexUtils;
 
 public class LTransformation {
 
+    // исправленный вектор L
     private static final byte[] l_vec = {
-            (byte)148, 32, (byte)133, 16, (byte)194, (byte)192, 1, (byte)251,
-            1, (byte)192, (byte)194, 16, (byte)133, 32, (byte)148, 1
+            (byte)0x94, 0x20, (byte)0x85, 0x10,
+            (byte)0xC2, (byte)0xC0, 0x01, (byte)0xFB,
+            0x01, (byte)0xC0, (byte)0xC2, 0x10,
+            (byte)0x85, 0x20, (byte)0x94, 0x01
     };
 
     private static byte gfMul(byte a, byte b) {
@@ -40,11 +43,9 @@ public class LTransformation {
         return out;
     }
 
-    // ---- Обратное R ----
     public static byte[] reverseR(byte[] state) {
         byte[] out = new byte[16];
-        System.arraycopy(state, 1, out, 0, 15); // сдвиг влево
-        // последний байт
+        System.arraycopy(state, 1, out, 0, 15);
         byte last = state[0];
         for (int i = 0; i < 15; i++) {
             last ^= gfMul(out[i], l_vec[i]);
