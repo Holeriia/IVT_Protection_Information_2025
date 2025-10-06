@@ -3,23 +3,30 @@ package main.java.cipher.kuznechik;
 import main.java.cipher.util.HexUtils;
 import main.java.cipher.util.XorUtils;
 
+/**
+ * Основное ядро алгоритма Кузнечик (GOST R 34.12–2015).
+ * Реализует генерацию ключей и операции шифрования/дешифрования блоков.
+ */
 public class KuznechikCore {
 
     private static final int BLOCK_SIZE = 16;
     private byte[][] iter_key = new byte[10][BLOCK_SIZE];
 
+    /** Инициализация с двумя 16-байтовыми половинами ключа. */
     public KuznechikCore(byte[] key1, byte[] key2) {
         expandKey(key1, key2);
     }
 
+    /** Генерация 32 констант C для ключевого расписания. */
     private void getC(byte[][] iterC) {
         for (int i = 0; i < 32; i++) {
             byte[] c = new byte[BLOCK_SIZE];
-            c[15] = (byte) (i + 1);  // только последний байт
+            c[15] = (byte) (i + 1); // только младший байт содержит номер
             iterC[i] = LTransformation.L(c);
         }
     }
 
+    /** Одна итерация функции F — часть ключевого расписания. */
     private byte[][] F(byte[] k1, byte[] k2, byte[] iterConst) {
         byte[] t = XorUtils.xor(k1, iterConst); // 1. XOR с константой
         t = STransformation.s(t);               // 2. S-преобразование
@@ -28,6 +35,7 @@ public class KuznechikCore {
         return new byte[][]{newK1, k1.clone()}; // меняем местами
     }
 
+    /** Расширение исходного ключа на 10 раундовых ключей. */
     private void expandKey(byte[] key1, byte[] key2) {
         byte[][] iterC = new byte[32][BLOCK_SIZE];
         getC(iterC);
@@ -50,6 +58,7 @@ public class KuznechikCore {
         }
     }
 
+    /** Шифрует один 16-байтовый блок. */
     public byte[] encryptBlock(byte[] blk) {
         if (blk.length != BLOCK_SIZE) throw new IllegalArgumentException("Block must be 16 bytes");
         byte[] out = blk.clone();
@@ -62,6 +71,7 @@ public class KuznechikCore {
         return out;
     }
 
+    /** Расшифровывает один 16-байтовый блок. */
     public byte[] decryptBlock(byte[] blk) {
         if (blk.length != BLOCK_SIZE) throw new IllegalArgumentException("Block must be 16 bytes");
         byte[] out = XorUtils.xor(iter_key[9], blk.clone());
@@ -73,6 +83,7 @@ public class KuznechikCore {
         return out;
     }
 
+    /** Тест работы шифра с примером из стандарта. */
     public static void main(String[] args) {
         byte[] key1 = HexUtils.hexStringToByteArray("8899AABBCCDDEEFF0011223344556677");
         byte[] key2 = HexUtils.hexStringToByteArray("FEDCBA98765432100123456789ABCDEF");

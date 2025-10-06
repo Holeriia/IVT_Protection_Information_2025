@@ -5,13 +5,13 @@ import main.java.cipher.api.KuznechikCipher;
 import main.java.cipher.util.HexUtils;
 
 /**
- * Тестовый класс для проверки реализации алгоритма "Кузнечик" (ГОСТ Р 34.12-2015)
+ * Тестовый класс для проверки реализации алгоритма Кузнечик
  */
 public class KuznechikTest {
 
     public static void main(String[] args) {
 
-        // Эталонные данные из ГОСТ Р 34.12–2015
+        // Эталонные данные из ГОСТ
         String hexKey =
                 "8899AABBCCDDEEFF0011223344556677" +
                         "FEDCBA98765432100123456789ABCDEF";

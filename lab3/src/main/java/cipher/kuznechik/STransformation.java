@@ -4,7 +4,7 @@ import main.java.cipher.util.HexUtils;
 
 public class STransformation {
 
-    // таблица прямого нелинейного преобразования
+    // Таблица S-бокса (прямое нелинейное преобразование)
     static final byte[] Pi = {
             (byte) 0xFC, (byte) 0xEE, (byte) 0xDD, 0x11, (byte) 0xCF, 0x6E, 0x31, 0x16, (byte) 0xFB, (byte) 0xC4, (byte) 0xFA, (byte) 0xDA, 0x23, (byte) 0xC5, 0x04, 0x4D,
             (byte) 0xE9, 0x77, (byte) 0xF0, (byte) 0xDB, (byte) 0x93, 0x2E, (byte) 0x99, (byte) 0xBA, 0x17, 0x36, (byte) 0xF1, (byte) 0xBB, 0x14, (byte) 0xCD, 0x5F, (byte) 0xC1,
@@ -24,7 +24,7 @@ public class STransformation {
             0x59, (byte) 0xA6, 0x74, (byte) 0xD2, (byte) 0xE6, (byte) 0xF4, (byte) 0xB4, (byte) 0xC0, (byte) 0xD1, 0x66, (byte) 0xAF, (byte) 0xC2, 0x39, 0x4B, 0x63, (byte) 0xB6
     };
 
-    // таблица обратного нелинейного преобразования, строится автоматически
+    // Таблица обратного S-бокса (строится автоматически)
     static final byte[] reverse_Pi = new byte[256];
     static {
         for (int i = 0; i < 256; i++) {
@@ -32,25 +32,25 @@ public class STransformation {
         }
     }
 
+    // Прямое S-преобразование
     public static byte[] s(byte[] in) {
         byte[] out = new byte[in.length];
         for (int i = 0; i < in.length; i++) {
-            int val = in[i] & 0xFF;
-            out[i] = Pi[val];
+            out[i] = Pi[in[i] & 0xFF];
         }
         return out;
     }
 
+    // Обратное S-преобразование
     public static byte[] reverseS(byte[] in) {
         byte[] out = new byte[in.length];
         for (int i = 0; i < in.length; i++) {
-            int val = in[i] & 0xFF;
-            out[i] = reverse_Pi[val];
+            out[i] = reverse_Pi[in[i] & 0xFF];
         }
         return out;
     }
 
-    // ----------------- тест отдельно -----------------
+    // Тест S и обратного S
     public static void main(String[] args) {
         byte[] test = new byte[16];
         for (int i = 0; i < 16; i++) test[i] = (byte) i;

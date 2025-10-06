@@ -1,6 +1,8 @@
 package main.java.cipher.util;
 
 public class XorUtils {
+
+    // Побайтное XOR двух массивов одинаковой длины
     public static byte[] xor(byte[] a, byte[] b) {
         if (a.length != b.length)
             throw new IllegalArgumentException("Длины массивов должны совпадать");

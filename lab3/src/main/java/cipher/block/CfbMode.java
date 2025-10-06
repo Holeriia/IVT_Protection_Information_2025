@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 /**
  * Режим обратной связи по шифру (CFB).
- * Работает поверх любого блочного шифра (например, DES).
+ * Работает поверх любого блочного шифра
  */
 public class CfbMode {
     private final BlockCipher cipher;
