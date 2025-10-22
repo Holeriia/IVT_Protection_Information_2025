@@ -1,36 +1,38 @@
 package main.java.rsa.core;
 
-import main.java.rsa.model.PublicKey;
 import main.java.rsa.model.PrivateKey;
+import main.java.rsa.model.PublicKey;
+
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 /**
- * Класс для шифрования и расшифровки данных по алгоритму RSA.
+ * Модуль шифрования и дешифрования RSA
  */
 public final class RSAEncryptor {
 
-    /**
-     * Шифрование числа (например, текст в виде BigInteger)
-     */
-    public static BigInteger encrypt(BigInteger message, PublicKey key) {
-        return message.modPow(key.getE(), key.getN());
+    /** Шифрует текст с помощью открытого ключа */
+    public static String encrypt(String message, PublicKey publicKey) {
+        BigInteger m = new BigInteger(1, message.getBytes(StandardCharsets.UTF_8));
+        BigInteger c = m.modPow(publicKey.getE(), publicKey.getN());
+        return Base64.getEncoder().encodeToString(c.toByteArray());
     }
 
-    /**
-     * Расшифровка числа
-     */
-    public static BigInteger decrypt(BigInteger cipher, PrivateKey key) {
-        return cipher.modPow(key.getD(), key.getN());
-    }
+    /** Расшифровывает Base64-строку с помощью закрытого ключа */
+    public static String decrypt(String base64Cipher, PrivateKey privateKey) {
+        byte[] cipherBytes = Base64.getDecoder().decode(base64Cipher);
+        BigInteger c = new BigInteger(1, cipherBytes);
+        BigInteger decrypted = c.modPow(privateKey.getD(), privateKey.getN());
+        byte[] decryptedBytes = decrypted.toByteArray();
 
-    /**
-     * Преобразование строки в BigInteger и обратно
-     */
-    public static BigInteger textToNumber(String text) {
-        return new BigInteger(text.getBytes());
-    }
+        // удаляем возможный ведущий ноль
+        if (decryptedBytes.length > 1 && decryptedBytes[0] == 0) {
+            byte[] tmp = new byte[decryptedBytes.length - 1];
+            System.arraycopy(decryptedBytes, 1, tmp, 0, tmp.length);
+            decryptedBytes = tmp;
+        }
 
-    public static String numberToText(BigInteger number) {
-        return new String(number.toByteArray());
+        return new String(decryptedBytes, StandardCharsets.UTF_8);
     }
 }

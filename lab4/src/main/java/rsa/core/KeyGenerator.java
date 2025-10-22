@@ -61,13 +61,13 @@ public final class KeyGenerator {
         return new RSAKeyPair(pub, priv);
     }
 
-
     /**
      * Быстрая генерация с разумным значением по умолчанию (2048 бит).
      */
     public RSAKeyPair generateDefault() {
         return generate(2048);
     }
+
 
     /**
      * Тестовый метод main для проверки генерации и корректности ключей.
@@ -86,8 +86,7 @@ public final class KeyGenerator {
 
         System.out.println("\nДлина модуля n: " + keyPair.getPublicKey().getN().bitLength() + " бит");
 
-
-    // Проверим корректность шифрования/расшифрования
+        // корректность шифрования/расшифрования
         BigInteger message = BigInteger.valueOf(123456789);
         BigInteger e = keyPair.getPublicKey().getE();
         BigInteger d = keyPair.getPrivateKey().getD();

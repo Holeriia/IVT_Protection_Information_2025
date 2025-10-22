@@ -4,34 +4,23 @@ import main.java.rsa.model.PrivateKey;
 import main.java.rsa.model.PublicKey;
 
 import java.math.BigInteger;
-import java.security.MessageDigest;
+import java.nio.charset.StandardCharsets;
 
 /**
- * Реализация электронной цифровой подписи по RSA.
- * Алгоритм:
- *   Подпись: S = H(m)^d mod n
- *   Проверка: H(m) == S^e mod n
+ * Модуль электронной подписи RSA
  */
 public final class RSASignature {
 
-    private static BigInteger hash(String message) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] bytes = digest.digest(message.getBytes());
-            return new BigInteger(1, bytes);
-        } catch (Exception e) {
-            throw new RuntimeException("Ошибка при хэшировании: " + e);
-        }
+    /** Создает подпись сообщения */
+    public static BigInteger sign(String message, PrivateKey privateKey) {
+        BigInteger m = new BigInteger(1, message.getBytes(StandardCharsets.UTF_8));
+        return m.modPow(privateKey.getD(), privateKey.getN());
     }
 
-    public static BigInteger sign(String message, PrivateKey key) {
-        BigInteger h = hash(message);
-        return h.modPow(key.getD(), key.getN());
-    }
-
-    public static boolean verify(String message, BigInteger signature, PublicKey key) {
-        BigInteger h = hash(message);
-        BigInteger check = signature.modPow(key.getE(), key.getN());
-        return h.equals(check);
+    /** Проверяет подпись */
+    public static boolean verify(String message, BigInteger signature, PublicKey publicKey) {
+        BigInteger m = new BigInteger(1, message.getBytes(StandardCharsets.UTF_8));
+        BigInteger verified = signature.modPow(publicKey.getE(), publicKey.getN());
+        return verified.equals(m);
     }
 }
