@@ -3,8 +3,8 @@ package main.java.cipher.block;
 import java.util.Arrays;
 
 /**
- * Режим обратной связи по шифру (CFB).
- * Работает поверх любого блочного шифра (например, DES).
+ * Режим обратной связи по шифру (CFB)
+ * Работает поверх любого блочного шифра
  */
 public class CfbMode {
     private final BlockCipher cipher;
