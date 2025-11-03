@@ -86,23 +86,13 @@ public class Sign {
     }
 
     // Вспомогательный метод для дополнения r или s нулями до требуемой длины
-    private String completion (BigInteger num) {
-        // Длина в шестнадцатеричных цифрах (hex) должна соответствовать p.bitLength / 4
-        int targetLength = parameters.p().bitLength() / 4;
+    private String completion(BigInteger num) {
+        int targetLength = (parameters.q().bitLength() + 3) / 4; // ceil(bits/4)
         var str = new StringBuilder(num.toString(16));
-
-        // Дополняем нулями слева
-        while (str.length() < targetLength)
-            str.insert(0, "0");
-
-        // Если по какой-то причине длина превышена, это ошибка,
-        // но в рамках ГОСТ, r и s должны быть меньше q, а q < p,
-        // так что длина не должна превышать targetLength.
-
+        while (str.length() < targetLength) str.insert(0, "0");
         return str.toString();
     }
 
-    // Шаг 8: Конкатенация (r || s)
     private String concatenation() {
         return completion(r) + completion(s);
     }

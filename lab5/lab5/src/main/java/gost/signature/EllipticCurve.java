@@ -1,7 +1,6 @@
 package gost.signature;
 
 import gost.occasion.AlienExceptions;
-
 import java.math.BigInteger;
 
 /**
@@ -10,37 +9,22 @@ import java.math.BigInteger;
  */
 public class EllipticCurve {
     private final SignatureParameters parameters;
-    private final BigInteger p; // Модуль поля
+    private final BigInteger p; // Модуль поля (простое число)
 
     public EllipticCurve (SignatureParameters parameters) {
         this.parameters = parameters;
         this.p = parameters.p();
     }
 
-    /**
-     * Реализует скалярное умножение точки на число (k * Point).
-     * Используется алгоритм удвоения-сложения (double-and-add).
-     * @param k Скаляр (целое число, например, секретный ключ d или случайное k).
-     * @param point Точка, которую нужно умножить (например, базовая точка P).
-     * @return Результирующая точка.
-     */
-    public Point scalar (BigInteger k, Point point) throws AlienExceptions.IncorrectParametersException {
-        // Установка нейтрального элемента (точка в бесконечности)
-        var result = new Point(null, null);
+    private BigInteger modP(BigInteger x) {
+        if (x == null) return null;
 
-        // Обходим биты k от старшего к младшему
-        for (int i = k.bitLength() - 1; i >= 0; i--){
-            // 1. Удвоение: result = result + result
-            try {
-                result = sum(result, result);
-            } catch (AlienExceptions.IncorrectParametersException e) {
-                // Преобразуем ошибку в более общую, если нужно, или просто пробрасываем
-                throw new AlienExceptions.IncorrectParametersException();
-            }
+        // Используем remainder для получения остатка.
+        BigInteger result = x.remainder(p);
 
-            // 2. Сложение, если бит равен 1: result = result + point
-            if (k.testBit(i))
-                result = sum(result, point);
+        // Гарантируем, что результат находится в диапазоне [0, p-1].
+        if (result.signum() < 0) {
+            result = result.add(p);
         }
         return result;
     }
@@ -52,42 +36,97 @@ public class EllipticCurve {
      * @return Результирующая точка C.
      */
     public Point sum (Point A, Point B) throws AlienExceptions.IncorrectParametersException {
-        // Проверка на нейтральный элемент (точку в бесконечности)
-        if (B.x() == null) return A;
+        // Обработка нейтрального элемента (Точка в бесконечности)
         if (A.x() == null) return B;
+        if (B.x() == null) return A;
 
-        BigInteger x, y;
+        BigInteger x1 = modP(A.x());
+        BigInteger y1 = modP(A.y());
+        BigInteger x2 = modP(B.x());
+        BigInteger y2 = modP(B.y());
         BigInteger lambda;
+        BigInteger a_mod_p = modP(parameters.a());
 
-        try {
-            if (B.equals(A)) {
-                // Удвоение точки A (A = B)
-                // lambda = (3*x^2 + a) * (2*y)^(-1) mod p
-                BigInteger numerator = (A.x().pow(2).multiply(BigInteger.valueOf(3))).add(parameters.a());
-                BigInteger denominator = A.y().multiply(BigInteger.TWO);
-                lambda = numerator.multiply(denominator.modInverse(p)).mod(p);
-            } else if (A.x().compareTo(B.x()) == 0) {
-                // A.x == B.x, A.y == -B.y (A = -B), результат - точка в бесконечности
-                return new Point(null, null);
-            } else {
-                // Сложение двух разных точек (A != B)
-                // lambda = (By - Ay) * (Bx - Ax)^(-1) mod p
-                BigInteger numerator = B.y().subtract(A.y());
-                BigInteger denominator = B.x().subtract(A.x());
-                lambda = numerator.multiply(denominator.modInverse(p)).mod(p);
+        // 1. Удвоение (x1 == x2 и y1 == y2)
+        if (x1.equals(x2) && y1.equals(y2)) {
+            // lambda = (3*x1^2 + a) * (2*y1)^(-1) mod p
+
+            // Числитель: (3*x1^2 + a)
+            BigInteger numerator = x1.modPow(BigInteger.TWO, p)
+                    .multiply(BigInteger.valueOf(3))
+                    .add(a_mod_p);
+            numerator = modP(numerator);
+
+            // Знаменатель: 2*y1 mod p
+            BigInteger denominator = y1.shiftLeft(1).mod(p);
+
+            if (denominator.equals(BigInteger.ZERO)) {
+                return new Point(null, null); // Точка в бесконечности
             }
 
-            // Xc = lambda^2 - Ax - Bx mod p
-            x = (lambda.modPow(BigInteger.TWO, p).subtract(A.x()).subtract(B.x()).mod(p));
+            lambda = numerator.multiply(denominator.modInverse(p)).mod(p);
 
-            // Yc = lambda * (Ax - Xc) - Ay mod p
-            y = (A.y().negate().mod(p)).add(lambda.multiply(A.x().subtract(x))).mod(p);
+            // 2. Симметричные точки (Точка в бесконечности)
+        } else if (x1.equals(x2) && y1.add(y2).mod(p).equals(BigInteger.ZERO)) {
+            return new Point(null, null);
 
-        } catch (ArithmeticException e) {
-            // Ошибка при modInverse (например, знаменатель равен 0)
-            throw new AlienExceptions.IncorrectParametersException();
+            // 3. Обычное сложение (x1 != x2)
+        } else {
+            // lambda = (y2 - y1) * (x2 - x1)^(-1) mod p
+
+            BigInteger dy = modP(y2.subtract(y1));
+            BigInteger dx = modP(x2.subtract(x1));
+
+            if (dx.equals(BigInteger.ZERO)) {
+                throw new AlienExceptions.IncorrectParametersException();
+            }
+
+            lambda = dy.multiply(dx.modInverse(p)).mod(p);
         }
 
-        return new Point(x, y);
+        // Единый расчет X3 и Y3
+        // Xc = lambda^2 - x1 - x2 mod p
+        BigInteger lambda_sq_mod_p = lambda.modPow(BigInteger.TWO, p);
+        BigInteger Xc_raw = lambda_sq_mod_p.subtract(x1).subtract(x2);
+        BigInteger x3 = modP(Xc_raw);
+
+        // Yc = lambda * (x1 - Xc) - y1 mod p
+        BigInteger Yc_raw = lambda.multiply(x1.subtract(x3)).subtract(y1);
+        BigInteger y3 = modP(Yc_raw);
+
+        return new Point(x3, y3);
+    }
+
+    /**
+     * Скалярное умножение: Horner (MSB-first).
+     * @param k Скаляр (целое число, например, секретный ключ d).
+     * @param point Точка, которую нужно умножить (например, базовая точка P).
+     * @return Результирующая точка.
+     */
+    public Point scalar (BigInteger k, Point point) throws AlienExceptions.IncorrectParametersException {
+        if (k == null) return new Point(null, null);
+
+        // Приведём k к диапазону [0, q-1]
+        BigInteger q = parameters.q();
+        k = k.mod(q);
+
+        if (k.signum() == 0) return new Point(null, null);
+
+        // Нормализуем базовую точку
+        Point base = point;
+        if (point.x() != null && point.y() != null) {
+            base = new Point(modP(point.x()), modP(point.y()));
+        }
+
+        Point result = new Point(null, null); // Нейтральный элемент O
+        for (int i = k.bitLength() - 1; i >= 0; i--) {
+            // Удвоение
+            result = sum(result, result);
+            if (k.testBit(i)) {
+                // Сложение с базовой точкой
+                result = sum(result, base);
+            }
+        }
+        return result;
     }
 }

@@ -2,3 +2,13 @@
 2025-11-03 13:49:55.403 [AWT-EventQueue-0] ERROR gost.occasion.AlienExceptions - Read error: 
 2025-11-03 14:00:09.021 [AWT-EventQueue-0] ERROR gost.occasion.AlienExceptions - Read error: data/private_keys/d_secret_256.key
 2025-11-03 14:01:26.128 [AWT-EventQueue-0] ERROR gost.occasion.AlienExceptions - Read error: data/messages/message.txt
+2025-11-03 16:57:11.943 [AWT-EventQueue-0] ERROR gost.occasion.AlienExceptions - The signature is unreadable.
+2025-11-03 18:00:25.340 [Test worker] ERROR gost.occasion.AlienExceptions - Curve parameters are incorrect.
+2025-11-03 18:44:39.341 [Test worker] ERROR gost.occasion.AlienExceptions - Curve parameters are incorrect.
+2025-11-03 18:53:31.078 [Test worker] ERROR gost.occasion.AlienExceptions - Curve parameters are incorrect.
+2025-11-03 19:00:12.214 [Test worker] ERROR gost.occasion.AlienExceptions - Curve parameters are incorrect.
+2025-11-03 19:00:35.849 [Test worker] ERROR gost.occasion.AlienExceptions - Curve parameters are incorrect.
+2025-11-03 19:06:45.664 [Test worker] ERROR gost.occasion.AlienExceptions - Curve parameters are incorrect.
+2025-11-03 19:07:20.941 [Test worker] ERROR gost.occasion.AlienExceptions - Curve parameters are incorrect.
+2025-11-03 19:11:53.751 [Test worker] ERROR gost.occasion.AlienExceptions - Curve parameters are incorrect.
+2025-11-03 19:13:16.602 [Test worker] ERROR gost.occasion.AlienExceptions - Curve parameters are incorrect.

@@ -24,7 +24,10 @@ public class Verify {
 
         // Шаг 1: Извлечение r и s из подписи
         try {
-            int partLength = parameters.p().bitLength() / 4;
+            int partLength = (parameters.q().bitLength() + 3) / 4;
+            if (sign.length() != partLength * 2) {
+                throw new AlienExceptions.SignatureUnreadableException();
+            }
             r = new BigInteger(sign.substring(0, partLength), 16);
             s = new BigInteger(sign.substring(partLength), 16);
         }
