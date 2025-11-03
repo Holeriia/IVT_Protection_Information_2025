@@ -61,6 +61,6 @@ public class Main {
         runCfbDemo("Нижегородский государственный технический университет", keyFixed, ivFixed);
 
         // 2. Демонстрация со случайно сгенерированными ключом и IV
-        runCfbDemo("Серова Валерия Павловна", randomBytes(32), randomBytes(16));
+        runCfbDemo("секрет успеха в дипломе политеха", randomBytes(32), randomBytes(16));
     }
 }

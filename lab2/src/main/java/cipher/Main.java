@@ -66,6 +66,6 @@ public class Main {
      */
     public static void main(String[] args) {
         runCfbDemo("Нижегородский государственный технический университет", toBytes("12345678"), toBytes("ABCDEFGH"));
-        runCfbDemo("Серова Валерия Павловна", randomBytes8(), randomBytes8());
+        runCfbDemo("Политех лучше всех", randomBytes8(), randomBytes8());
     }
 }
