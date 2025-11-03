@@ -1,0 +1,4 @@
+2025-11-03 13:33:06.889 [AWT-EventQueue-0] ERROR gost.occasion.AlienExceptions - Curve parameters are incorrect.
+2025-11-03 13:49:55.403 [AWT-EventQueue-0] ERROR gost.occasion.AlienExceptions - Read error: 
+2025-11-03 14:00:09.021 [AWT-EventQueue-0] ERROR gost.occasion.AlienExceptions - Read error: data/private_keys/d_secret_256.key
+2025-11-03 14:01:26.128 [AWT-EventQueue-0] ERROR gost.occasion.AlienExceptions - Read error: data/messages/message.txt
