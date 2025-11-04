@@ -6,7 +6,6 @@ import gost.occasion.AlienExceptions;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.function.Consumer;
 
 /**
  * Главный класс GUI, управляющий состоянием и действиями (Контроллер).

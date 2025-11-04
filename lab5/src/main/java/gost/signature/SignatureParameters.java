@@ -1,7 +1,6 @@
 package gost.signature;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigInteger;
 
@@ -29,7 +28,7 @@ public record SignatureParameters (
                 "Точка P:\n" + P.toString();
     }
 
-    /**
+    /**a
      * Конструктор для десериализации JSON с помощью Jackson.
      */
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

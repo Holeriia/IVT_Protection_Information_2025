@@ -1,9 +1,7 @@
 package gost.signature;
 
-import gost.occasion.AlienExceptions;
-
 import java.math.BigInteger;
-import java.security.SecureRandom; // Криптостойкий генератор
+import java.security.SecureRandom;
 
 /**
  * Класс, реализующий процесс формирования ЭЦП по ГОСТ Р 34.10-2018.

@@ -6,7 +6,6 @@ import gost.signature.Point;
 import gost.signature.SignatureParameters;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;

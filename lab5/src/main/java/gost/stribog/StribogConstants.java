@@ -1,7 +1,5 @@
 package gost.stribog;
 
-import java.util.Arrays;
-
 public class StribogConstants {
 
     /**
@@ -140,15 +138,4 @@ public class StribogConstants {
         }
         return result;
     }
-
-    //    public int[] numByte(int num) {
-//        var result = new int[64];
-//        Arrays.fill(result, 0);
-//        //исходя из того, что любое число, теоретически подаваемое в функцию, можно закодировать 2 байтам
-//        result[62] = (num * 8) >> 8;
-//        //поскольку в Java тип byte хранит значения от -128 до 127(первый бит отводится под знак),
-//        // мы вынуждены интерпретировать значения в положительный диапазон https://habr.com/ru/post/225901/
-//        result[63] = (num * 8) & 0xFF;
-//        return result;
-//    }
 }

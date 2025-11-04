@@ -19,13 +19,12 @@ public class RSATest {
 
         System.out.println("=== СРАВНЕНИЕ РЕАЛИЗАЦИЙ RSA ===\n");
 
-        // Наша реализация
         KeyGenerator generator = new KeyGenerator();
         RSAKeyPair customPair = generator.generate(1024);
         PublicKey customPub = customPair.getPublicKey();
         PrivateKey customPriv = customPair.getPrivateKey();
 
-        System.out.println("=== Наша реализация RSA ===");
+        System.out.println("=== реализация RSA ===");
         System.out.println("Открытый ключ:  e=" + customPub.getE() + "\n n=" + customPub.getN());
         System.out.println("Закрытый ключ:  d=" + customPriv.getD());
         System.out.println("Сообщение:      " + message);
@@ -43,7 +42,6 @@ public class RSATest {
         System.out.println("Проверка подписи: " + (verified ? "УСПЕХ ✅" : "ОШИБКА ❌"));
         System.out.println();
 
-        // Стандартная реализация Java Security
         System.out.println("=== Стандартная реализация RSA из Java Security ===");
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         keyGen.initialize(1024);
